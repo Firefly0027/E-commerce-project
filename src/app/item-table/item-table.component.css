@@ -1,0 +1,68 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+.example-label {
+  display: table-cell;
+  font-size: 14px;
+  margin-left: 8px;
+  min-width: 120px;
+}
+.example-button-size {
+  padding: 0 66px;
+}
+.example-button-row {
+  display: table-cell;
+  width: 190px;
+}
+.example-button-size {
+  padding: 0 66px;
+}
+.example-button-next {
+  width: 250px;
+}
+.Order-Table {
+  width: 97%;
+  margin: 20px auto;
+}
+.example-filter {
+  width: 99%;
+  padding: 25px;
+}
+.ng-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.mat-row:hover {
+  background-color: #e8eaf6;
+  cursor: pointer;
+}
+.table {
+  width: 100%;
+}
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+.td,
+th {
+  width: 05%;
+}
+.example-button-sizee {
+  padding: 0 30px;
+}
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  padding: 30px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+.color-change {
+  color: aliceblue;
+  background: rgb(2, 0, 36);
+}
+
+.mat-header-cell {
+  background-color: rgb(6, 6, 54);
+  color: white;
+}

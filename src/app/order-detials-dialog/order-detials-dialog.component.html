@@ -1,0 +1,76 @@
+<!-- Order Details -->
+<mat-toolbar class="color-change">
+  <mat-icon>explicit</mat-icon>
+  <span>Order Details</span>
+</mat-toolbar>
+<div mat-dialog-content>
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="itemName">
+      <mat-header-cell *matHeaderCellDef> Item-Name </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.company | uppercase }}
+      </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef>
+        Total :</mat-footer-cell
+      >
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.price }} </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.quantity }} </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef>{{
+        getTotalQuantity()
+      }}</mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="grosstotal">
+      <mat-header-cell *matHeaderCellDef> Gross-Total </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.grosstotal }} </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef>{{
+        GetTotalGross() | currency
+      }}</mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="discount">
+      <mat-header-cell *matHeaderCellDef> Discount </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.discount / 100 | percent }}
+      </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef>{{
+        getTotalDiscount() | currency
+      }}</mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tax">
+      <mat-header-cell *matHeaderCellDef> Tax </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.tax / 100 | percent }}
+      </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef>{{
+        getTotalTax() | currency
+      }}</mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+      <mat-cell *matCellDef="let data"> {{ data.total | currency }} </mat-cell>
+      <mat-footer-cell mat-footer-cell *matFooterCellDef>{{
+        GetTotalProducts() | currency
+      }}</mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-footer-row
+      mat-footer-row
+      *matFooterRowDef="displayedColumns; sticky: true"
+      class="example-first-footer-row"
+    ></mat-footer-row>
+  </mat-table>
+</div>

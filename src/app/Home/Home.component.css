@@ -1,0 +1,30 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+.example-label {
+  display: table-cell;
+  font-size: 14px;
+  margin-left: 8px;
+  min-width: 120px;
+}
+.example-button-row {
+  display: table-cell;
+  width: 190px;
+}
+.example-button-size {
+  padding: 0 40px;
+}
+.example-button-next {
+  width: 250px;
+}
+.example-color {
+  color: aliceblue;
+  background: rgb(2, 0, 36);
+}
+.example-button-categories {
+  width: 200px;
+  padding: 0 0px;
+}
+.example-spacer1 {
+  flex: 10 10 auto;
+}

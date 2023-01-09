@@ -1,0 +1,41 @@
+mat-form-field {
+  width: 100%;
+}
+.example-width {
+  width: 50%;
+}
+.mat-mdc-table {
+  width: 100%;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.mat-column-name {
+  height: 100px;
+}
+.mat-header-cell {
+  background-color: rgb(6, 6, 54);
+  color: white;
+}
+.example-align {
+  display: inline-block;
+  text-align: left;
+  width: 0.4%;
+}
+.example-margin {
+  width: 50%;
+  margin: 0px 0px 10px 500px;
+  flex: content;
+}
+.example-width1 {
+  width: 50%;
+  margin: 0px 0px 10px 500px;
+}
+.DropDown-color {
+  text-align: center;
+  padding: 0 27px;
+}
+.example-button-size {
+  padding: 0 66px;
+  background: rgb(6, 6, 54);
+}

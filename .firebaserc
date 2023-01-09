@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "testing-4fd86": {
+      "hosting": {
+        "testing-firebase": [
+          "testing-4fd86"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "testing-4fd86"
+  }
+}

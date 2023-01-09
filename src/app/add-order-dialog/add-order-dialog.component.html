@@ -1,0 +1,139 @@
+<!-- TO POST DATA TO FireBase USING THOSE INPUTS  /  INPUTS TO ORDER TABLE STARTS-->
+<h1 mat-dialog-title>Add Order Form</h1>
+<div mat-dialog-content>
+  <form *ngIf="OrderForm" [formGroup]="OrderForm" #f="ngForm">
+    <mat-form-field class="example-width" appearance="outline">
+      <mat-label>Operation-Type</mat-label>
+      <mat-select
+        formControlName="operationType"
+        [value]="OrderForm.value.operationType"
+      >
+        <mat-option *ngFor="let t of Types" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-width" appearance="outline">
+      <mat-label>Choose a Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="date"
+        (ngModelChange)="dt = $event"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="example-width" appearance="outline">
+      <mat-label>Address</mat-label>
+      <input
+        formControlName="address"
+        matInput
+        placeholder="Ex.Amman"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="example-width" appearance="outline">
+      <mat-label>Customer Name</mat-label>
+      <input
+        formControlName="custname"
+        matInput
+        placeholder="Ex.Adam"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field fxLayoutAlign="center center" (click)="GetCategories()">
+      <mat-label> Filter by Categories</mat-label>
+      <mat-select (selectionChange)="FilterCateg($event)">
+        <mat-option
+          *ngFor="let Categ of categories"
+          [value]="Categ.categories"
+          class="DropDown-color"
+        >
+          {{ Categ.categories }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <br />
+    <!-- INPUTS TO ORDER TABLE ENDS -->
+    <mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z8"
+      *ngIf="getOrderDetailsLength() > 0"
+    >
+      <ng-container matColumnDef="itemName">
+        <mat-header-cell *matHeaderCellDef> Item-Name </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.company | uppercase }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.price }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="discount">
+        <mat-header-cell *matHeaderCellDef> Discount </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.discount + "%" }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tax">
+        <mat-header-cell *matHeaderCellDef> Tax </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.tax + "%" }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index">
+          <mat-form-field class="example-width" appearance="outline">
+            <input
+              matInput
+              type="number"
+              min="0"
+              max="999"
+              oninput="this.value = Math.abs(this.value)"
+              onKeyUp="if(this.value>999){this.value='999';}else if(this.value<0){this.value='0';}"
+              [formControl]="getOrderDetailsFormControl(element.id, 'quantity')"
+              (input)="onChange(i, element.id)"
+            /> </mat-form-field
+        ></mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </mat-table>
+  </form>
+  <!-- CALCULATION RESULTS ARE SHOWN HERE -->
+  <div>
+    <h2>
+      Gross-Total : <input matInput type="text" class="example-align" />
+      {{ grossTotalDisplayValue | number : "2.2-5" }}
+    </h2>
+    <h2>
+      Discount : <input matInput type="text" class="example-align" />
+      {{ Totaldiscount | number : "2.2-5" }}
+    </h2>
+    <h2>
+      Tax : <input matInput type="text" class="example-align" />
+      {{ totaltax | number : "2.2-5" }}
+    </h2>
+    <h2>
+      Net-Total : <input matInput type="text" class="example-align" />
+      {{ total | number : "2.2-5" }}
+    </h2>
+  </div>
+</div>
+<!-- TO SAVE THE INPUTS -->
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="AddOrder()" type="submit">
+    Save
+  </button>
+</div>

@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Enter New Categorie</h1>
+<div mat-dialog-content>
+  <form [formGroup]="CategForm">
+    <mat-form-field>
+      <mat-label>Categories</mat-label>
+      <input
+        formControlName="categories"
+        matInput
+        nameControl="ngModel"
+        placeholder="Ex.Electronics"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    (click)="AddCategorie()"
+  >
+    Save
+  </button>
+</div>
