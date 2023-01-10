@@ -59,7 +59,7 @@ export class AddOrderDialogComponent implements OnInit {
   UID: any;
   dt = new Date();
   Type = 'Sales';
-  Types = ['Retial', 'Sales'];
+  Types = ['Retail', 'Sales'];
   apiResponse!: any[];
   categories!: any;
 
