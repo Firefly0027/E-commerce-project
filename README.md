@@ -1,6 +1,7 @@
 # TestingFirebase
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.8.
+The project is an E-commerce project for adding Items and placing orders, with calculating Gross-total and net-total for each order responsively. This project is developed in Angular 14 and Firebase as a database. The project is brimmed with fresh Angular Material look and addition of new features like Sorting, Pagination and Searching in the main page. Also filled with customized alerts, Routing and Smooth Scroll Effect.
 
 ## Development server
 
