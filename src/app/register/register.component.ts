@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
           Swal.fire({
             position: 'top',
             icon: 'success',
-            title: 'registeration is successful',
+            title: res.message,
             showConfirmButton: false,
             timer: 1300,
           });
