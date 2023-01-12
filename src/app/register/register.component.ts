@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../authentication/auth.service';
 
@@ -8,37 +10,71 @@ import { AuthService } from '../authentication/auth.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  email: string = '';
-  password: string = '';
+  SignUpForm!: FormGroup;
 
-  constructor(private authh: AuthService) {}
+  constructor(
+    private authh: AuthService,
+    private formbuilder: FormBuilder,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.SignUpForm = this.formbuilder.group({
+      Email: ['', Validators.required],
+      Password: ['', Validators.required],
+      UserName: ['', Validators.required],
+    });
+  }
   Register() {
-    if (this.email == '') {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'please enter the email',
-        showConfirmButton: false,
-        timer: 1300,
+    if (this.SignUpForm.valid) {
+      console.log(this.SignUpForm.value);
+      this.authh.SignUp(this.SignUpForm.value).subscribe({
+        next: (res) => {
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'registeration is successful',
+            showConfirmButton: false,
+            timer: 1300,
+          });
+          this.router.navigate(['./login']);
+        },
+        error: (err) => {
+          Swal.fire(err?.error.message);
+          this.router.navigate(['./register']);
+        },
       });
-      return;
+    } else {
+      if (this.SignUpForm.value.Email == '') {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'please enter the email',
+          showConfirmButton: false,
+          timer: 1300,
+        });
+        return;
+      }
+      if (this.SignUpForm.value.Password == '') {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'please enter the password',
+          showConfirmButton: false,
+          timer: 1300,
+        });
+        return;
+      }
+      if (this.SignUpForm.value.UserName == '') {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'please enter the UserName',
+          showConfirmButton: false,
+          timer: 1300,
+        });
+        return;
+      }
     }
-
-    if (this.password == '') {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'please enter the password',
-        showConfirmButton: false,
-        timer: 1300,
-      });
-      return;
-    }
-
-    this.authh.register(this.email, this.password);
-    this.email = '';
-    this.password = '';
   }
 }

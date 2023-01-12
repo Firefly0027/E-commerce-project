@@ -33,13 +33,17 @@
     <div fxLayoutAlign="center center" fxFlexFill>
       <mat-card fxFlex="25">
         <mat-toolbar class="example-login">Register Page</mat-toolbar>
-        <form fxLayoutAlign="stretch" fxLayout="column">
+        <form
+          fxLayoutAlign="stretch"
+          fxLayout="column"
+          [formGroup]="SignUpForm"
+        >
           <mat-form-field>
             <input
               matInput
-              placeholder="Username"
+              placeholder="Email"
               name="email"
-              [(ngModel)]="email"
+              formControlName="Email"
             />
           </mat-form-field>
 
@@ -49,7 +53,16 @@
               type="password"
               placeholder="Password"
               name="password"
-              [(ngModel)]="password"
+              formControlName="Password"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              type="type"
+              placeholder="Username"
+              formControlName="UserName"
             />
           </mat-form-field>
           <button

@@ -17,9 +17,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-  Signout() {
-    this.auth.signout;
-  }
+
   OpenDialog() {
     this.dialog.open(CategoriesDialogComponent, {
       width: '20%',

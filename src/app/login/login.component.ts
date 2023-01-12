@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../authentication/auth.service';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,37 +10,59 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  email: string = '';
-  password: string = '';
+  loginForm!: FormGroup;
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private formbuilder: FormBuilder,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loginForm = this.formbuilder.group({
+      Email: ['', Validators.required],
+      Password: ['', Validators.required],
+    });
+  }
 
   Login() {
-    if (this.email == '') {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'please enter the email',
-        showConfirmButton: false,
-        timer: 1300,
+    if (this.loginForm.valid) {
+      this.auth.Login(this.loginForm.value).subscribe({
+        next: (res) => {
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Login is successful',
+            showConfirmButton: false,
+            timer: 1300,
+          });
+          this.router.navigate(['./order-Table']);
+        },
+        error: (err) => {
+          Swal.fire(err?.error.message);
+        },
       });
-      return;
+    } else {
+      if (this.loginForm.value.Email == '') {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'please enter the email',
+          showConfirmButton: false,
+          timer: 1300,
+        });
+        return;
+      }
+      if (this.loginForm.value.Password == '') {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'please enter the password',
+          showConfirmButton: false,
+          timer: 1300,
+        });
+        return;
+      }
     }
-    if (this.password == '') {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'please enter the password',
-        showConfirmButton: false,
-        timer: 1300,
-      });
-      return;
-    }
-
-    this.auth.login(this.email, this.password);
-    this.email = '';
-    this.password = '';
   }
 }
