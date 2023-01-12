@@ -266,8 +266,13 @@ export class AddOrderDialogComponent implements OnInit {
     }
   }
   GetCategories() {
-    this.api.GetCategories().subscribe((data) => {
-      this.categories = data;
+    this.api.GetCategories().subscribe({
+      next: (Categ) => {
+        this.categories = Categ;
+      },
+      error: (err) => {
+        alert(err.error.message);
+      },
     });
   }
 }

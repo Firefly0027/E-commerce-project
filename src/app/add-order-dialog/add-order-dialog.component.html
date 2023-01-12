@@ -49,10 +49,10 @@
       <mat-select (selectionChange)="FilterCateg($event)">
         <mat-option
           *ngFor="let Categ of categories"
-          [value]="Categ.categories"
+          [value]="Categ.categoryName"
           class="DropDown-color"
         >
-          {{ Categ.categories }}
+          {{ Categ.categoryName }}
         </mat-option>
       </mat-select>
     </mat-form-field>

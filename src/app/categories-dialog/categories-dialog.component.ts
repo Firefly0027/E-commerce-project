@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { firebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-categories-dialog',
@@ -13,6 +14,7 @@ export class CategoriesDialogComponent implements OnInit {
   CategForm!: FormGroup;
 
   constructor(
+    private Service: firebaseService,
     private afs: AngularFirestore,
     private formbuilder: FormBuilder,
     private DialoGRef: MatDialogRef<CategoriesDialogComponent>
@@ -20,7 +22,7 @@ export class CategoriesDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.CategForm = this.formbuilder.group({
-      categories: ['', Validators.required],
+      categoryName: ['', Validators.required],
     });
   }
 
@@ -34,11 +36,8 @@ export class CategoriesDialogComponent implements OnInit {
         timer: 1300,
       });
     } else {
-      this.afs
-        .collection('Categories')
-        .doc(this.CategForm.value.categories)
-        .set(this.CategForm.value)
-        .then(() => {
+      this.Service.AddCategories(this.CategForm.value).subscribe({
+        next: (res) => {
           Swal.fire({
             position: 'top',
             icon: 'success',
@@ -46,16 +45,39 @@ export class CategoriesDialogComponent implements OnInit {
             showConfirmButton: false,
             timer: 1300,
           });
-        })
-        .catch((error) => {
+        },
+        error: () => {
           Swal.fire({
             position: 'top',
-            icon: 'success',
+            icon: 'error',
             title: 'Error Adding Categorie!!',
             showConfirmButton: false,
             timer: 1300,
           });
-        });
+        },
+      });
+      // this.afs
+      //   .collection('Categories')
+      //   .doc(this.CategForm.value.categories)
+      //   .set(this.CategForm.value)
+      //   .then(() => {
+      //     Swal.fire({
+      //       position: 'top',
+      //       icon: 'success',
+      //       title: 'Categorie successfully Added!',
+      //       showConfirmButton: false,
+      //       timer: 1300,
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     Swal.fire({
+      //       position: 'top',
+      //       icon: 'success',
+      //       title: 'Error Adding Categorie!!',
+      //       showConfirmButton: false,
+      //       timer: 1300,
+      //     });
+      //   });
       this.CategForm.reset();
       this.DialoGRef.close('Saved!');
     }
