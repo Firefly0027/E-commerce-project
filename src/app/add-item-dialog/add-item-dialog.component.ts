@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { generate } from 'shortid';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import Swal from 'sweetalert2';
@@ -18,24 +16,20 @@ export class AddItemDialogComponent implements OnInit {
   ItemForm!: FormGroup;
   actionbtn: string = 'Save';
   Availability = ['In stock', 'out of stock'];
-  id!: string;
-  math!: number;
   categories!: any;
 
   constructor(
+    private Service: firebaseService,
     private formbuilder: FormBuilder,
     private DialoGRef: MatDialogRef<AddItemDialogComponent>,
-    private afs: AngularFirestore,
     public angularFireAuth: AngularFireAuth,
     private api: firebaseService,
     @Inject(MAT_DIALOG_DATA) public editdata: any
   ) {}
 
   ngOnInit(): void {
-    let Uid = generate();
     this.ItemForm = this.formbuilder.group({
       categories: ['', Validators.required],
-      id: [Uid],
       company: ['', Validators.required],
       availability: ['', Validators.required],
       price: ['', Validators.required],
@@ -47,7 +41,6 @@ export class AddItemDialogComponent implements OnInit {
     if (this.editdata) {
       this.actionbtn = 'UpDate';
       this.ItemForm.controls['categories'].setValue(this.editdata.categories);
-      this.ItemForm.controls['id'].setValue(this.editdata.id);
       this.ItemForm.controls['company'].setValue(this.editdata.company);
       this.ItemForm.controls['availability'].setValue(
         this.editdata.availability
@@ -69,11 +62,8 @@ export class AddItemDialogComponent implements OnInit {
         timer: 1300,
       });
     } else {
-      this.afs
-        .collection('ITEMS')
-        .doc(this.ItemForm.value.id)
-        .set(this.ItemForm.value)
-        .then(() => {
+      this.Service.AddItems(this.ItemForm.value).subscribe({
+        next: (res) => {
           Swal.fire({
             position: 'top',
             icon: 'success',
@@ -81,16 +71,19 @@ export class AddItemDialogComponent implements OnInit {
             showConfirmButton: false,
             timer: 1300,
           });
-        })
-        .catch((error) => {
+        },
+        error: (err) => {
           Swal.fire({
             position: 'top',
             icon: 'success',
-            title: 'Error Adding Item!!',
+            title: err?.error.message,
             showConfirmButton: false,
             timer: 1300,
           });
-        });
+          console.log(err.message);
+        },
+      });
+
       this.ItemForm.reset();
       this.DialoGRef.close('Saved!');
     }

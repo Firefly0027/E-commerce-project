@@ -49,18 +49,6 @@ export class ItemTableComponent implements OnInit {
     private afs: AngularFirestore
   ) {}
 
-  //Sorting and Paginator
-  ngAfterViewInit() {
-    this.afs
-      .collection<any>('ITEMS')
-      .valueChanges()
-      .subscribe((data) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      });
-  }
-
   ngOnInit(): void {
     this.getAllItem();
   }
@@ -85,10 +73,15 @@ export class ItemTableComponent implements OnInit {
   }
 
   getAllItem() {
-    this.api.GetItems().subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    this.api.GetItems().subscribe({
+      next: (data) => {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (err) => {
+        alert(err?.error.message);
+      },
     });
   }
 

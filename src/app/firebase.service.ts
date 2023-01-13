@@ -11,6 +11,7 @@ export class firebaseService {
   sort: any;
 
   private BaseUrl: string = 'https://localhost:7207/api/Category';
+  private BaseUrlItems: string = 'https://localhost:7207/api/ItemTable';
 
   constructor(private afs: AngularFirestore, private http: HttpClient) {}
 
@@ -22,8 +23,13 @@ export class firebaseService {
       .valueChanges();
   }
 
-  GetItems() {
-    return this.afs.collection<any>('ITEMS').valueChanges();
+  GetItems(): Observable<any> {
+    return this.http.get<any>(this.BaseUrlItems);
+  }
+
+  AddItems(ItemsObj: any): Observable<any> {
+    console.log(ItemsObj);
+    return this.http.post<any>(`${this.BaseUrlItems}`, ItemsObj);
   }
 
   GetCategories(): Observable<any> {
