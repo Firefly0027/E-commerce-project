@@ -5,13 +5,13 @@
     <mat-form-field class="example-width" appearance="outline">
       <mat-label>Categories</mat-label>
       <mat-select
-        formControlName="categories"
+        formControlName="categoryID"
         [value]="ItemForm.value.categories"
         (click)="GetCategories()"
       >
         <mat-option
           *ngFor="let Categ of categories"
-          [value]="Categ.categoryName"
+          [value]="Categ.categoryID"
           >{{ Categ.categoryName }}</mat-option
         >
       </mat-select>

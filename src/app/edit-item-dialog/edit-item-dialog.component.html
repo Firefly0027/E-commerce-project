@@ -1,0 +1,118 @@
+<div fxLayoutAlign="center center">
+  <mat-card fxFlex="55">
+    <mat-toolbar class="example-login">Edit Item Form</mat-toolbar>
+    <form fxLayoutAlign="stretch" fxLayout="column">
+      <mat-form-field appearance="outline">
+        <mat-label>ID</mat-label>
+        <input
+          type="text"
+          matInput
+          readonly
+          [(ngModel)]="itemsDetials.id"
+          name="id"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Categories</mat-label>
+        <mat-select
+          (click)="GetCategories()"
+          name="categoryid"
+          [(ngModel)]="itemsDetials.categoryid"
+        >
+          <mat-option
+            *ngFor="let Categ of categories"
+            [value]="Categ.categoryID"
+            >{{ Categ.categoryName }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Item-Name</mat-label>
+        <input matInput [(ngModel)]="itemsDetials.company" name="company" />
+      </mat-form-field>
+
+      <mat-label><h2>Availability</h2></mat-label>
+      <mat-radio-group
+        name="availability"
+        aria-label="Select an option"
+        class="example-radio-group"
+        [(ngModel)]="itemsDetials.availability"
+      >
+        <mat-radio-button
+          class="example-radio-button"
+          *ngFor="let available of Availability"
+          [value]="available"
+        >
+          {{ available }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <input
+          matInput
+          type="number"
+          min=".01"
+          max="999999999"
+          onKeyUp="if(this.value>999999999){this.value='999999999';}else if(this.value<0){this.value='0';}"
+          value="0"
+          step="0.01"
+          [(ngModel)]="itemsDetials.price"
+          name="price"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Discount</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          max="100"
+          oninput="this.value = Math.abs(this.value)"
+          onKeyUp="if(this.value>100){this.value='100';}else if(this.value<0){this.value='0';}"
+          [(ngModel)]="itemsDetials.discount"
+          name="discount"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tax</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          max="100"
+          oninput="this.value = Math.abs(this.value)"
+          onKeyUp="if(this.value>100){this.value='100';}else if(this.value<0){this.value='0';}"
+          [(ngModel)]="itemsDetials.tax"
+          name="tax"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="itemsDetials.description"
+          name="description"
+        ></textarea>
+      </mat-form-field>
+    </form>
+    <mat-card-actions [align]="'end'">
+      <button mat-raised-button color="warn" routerLink="/Item-Table">
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="upDateItem()"
+      >
+        UpDate
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

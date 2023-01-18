@@ -10,8 +10,8 @@ import { from, Observable } from 'rxjs';
 export class firebaseService {
   sort: any;
 
-  private BaseUrl: string = 'https://localhost:7207/api/Category';
-  private BaseUrlItems: string = 'https://localhost:7207/api/ItemTable';
+  private BaseUrl: string = 'https://localhost:7071/api/Category';
+  private BaseUrlItems: string = 'https://localhost:7071/api/ItemTable';
 
   constructor(private afs: AngularFirestore, private http: HttpClient) {}
 
@@ -28,8 +28,22 @@ export class firebaseService {
   }
 
   AddItems(ItemsObj: any): Observable<any> {
-    console.log(ItemsObj);
     return this.http.post<any>(`${this.BaseUrlItems}`, ItemsObj);
+  }
+
+  EditItem(id: string): Observable<any> {
+    return this.http.get<any>('https://localhost:7071/api/ItemTable/' + id);
+  }
+
+  UpDateItem(id: string, UpdateItemRequest: any): Observable<any> {
+    return this.http.put<any>(
+      'https://localhost:7071/api/ItemTable/' + id,
+      UpdateItemRequest
+    );
+  }
+
+  DeleteItem(id: string): Observable<any> {
+    return this.http.delete<any>('https://localhost:7071/api/ItemTable/' + id);
   }
 
   GetCategories(): Observable<any> {

@@ -8,6 +8,8 @@ import { AddItemDialogComponent } from '../add-item-dialog/add-item-dialog.compo
 import { firebaseService } from '../firebase.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import Swal from 'sweetalert2';
+import { EditItemDialogComponent } from '../edit-item-dialog/edit-item-dialog.component';
+import { Router } from '@angular/router';
 
 export interface ItemTable {
   categories: string;
@@ -46,7 +48,7 @@ export class ItemTableComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private api: firebaseService,
-    private afs: AngularFirestore
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -85,21 +87,7 @@ export class ItemTableComponent implements OnInit {
     });
   }
 
-  EditOrder(element: any) {
-    this.dialog
-      .open(AddItemDialogComponent, {
-        width: '30%',
-        data: element,
-      })
-      .afterClosed()
-      .subscribe((val) => {
-        if (val === 'Updated!') {
-          this.getAllItem();
-        }
-      });
-  }
-
-  DeleteOrder(id: string) {
+  DeleteItem(id: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'you will not be able to retrieve this Item!',
@@ -109,7 +97,18 @@ export class ItemTableComponent implements OnInit {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.afs.collection('ITEMS').doc(id).delete();
+        this.api.DeleteItem(id).subscribe({
+          next: (res) => {
+            this.ngOnInit();
+            Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Item successfully Deleted!',
+              showConfirmButton: false,
+              timer: 1300,
+            });
+          },
+        });
       } else result.isDismissed;
     });
   }

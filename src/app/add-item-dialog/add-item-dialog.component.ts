@@ -29,7 +29,7 @@ export class AddItemDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.ItemForm = this.formbuilder.group({
-      categories: ['', Validators.required],
+      categoryID: ['', Validators.required],
       company: ['', Validators.required],
       availability: ['', Validators.required],
       price: ['', Validators.required],
@@ -40,7 +40,7 @@ export class AddItemDialogComponent implements OnInit {
     // TO Edit the Data saved in Firebase
     if (this.editdata) {
       this.actionbtn = 'UpDate';
-      this.ItemForm.controls['categories'].setValue(this.editdata.categories);
+      this.ItemForm.controls['categoryName'].setValue(this.editdata.categories);
       this.ItemForm.controls['company'].setValue(this.editdata.company);
       this.ItemForm.controls['availability'].setValue(
         this.editdata.availability
@@ -83,7 +83,6 @@ export class AddItemDialogComponent implements OnInit {
           console.log(err.message);
         },
       });
-
       this.ItemForm.reset();
       this.DialoGRef.close('Saved!');
     }

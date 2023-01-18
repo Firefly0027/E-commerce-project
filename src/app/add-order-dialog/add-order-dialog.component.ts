@@ -156,7 +156,10 @@ export class AddOrderDialogComponent implements OnInit {
   // Filtering Categories method
   FilterCateg($event: any) {
     let FilteredData = _.filter(this.apiResponse, (item) => {
-      return item.categories == $event.value && item.availability == 'In stock';
+      return (
+        item.categories.categoryName == $event.value &&
+        item.availability == 'In stock'
+      );
     });
     this.dataSource = new MatTableDataSource(FilteredData);
   }
