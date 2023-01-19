@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.auth.Login(this.loginForm.value).subscribe({
         next: (res) => {
+          localStorage.setItem('user', JSON.stringify(res.id));
           Swal.fire({
             position: 'top',
             icon: 'success',

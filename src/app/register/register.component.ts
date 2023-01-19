@@ -27,7 +27,6 @@ export class RegisterComponent implements OnInit {
   }
   Register() {
     if (this.SignUpForm.valid) {
-      console.log(this.SignUpForm.value);
       this.authh.SignUp(this.SignUpForm.value).subscribe({
         next: (res) => {
           Swal.fire({

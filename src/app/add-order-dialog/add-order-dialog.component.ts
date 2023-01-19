@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   FormArray,
   FormBuilder,
@@ -11,10 +10,8 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
-import { generate } from 'shortid';
 import { MatTableDataSource } from '@angular/material/table';
 import { firebaseService } from '../firebase.service';
 import Swal from 'sweetalert2';
@@ -56,7 +53,7 @@ export class AddOrderDialogComponent implements OnInit {
   totaltax: any = 0;
   OrderForm!: FormGroup;
   id!: string;
-  UID: any;
+  UID: any = localStorage.getItem('user');
   dt = new Date();
   Type = 'Sales';
   Types = ['Retail', 'Sales'];
@@ -65,7 +62,6 @@ export class AddOrderDialogComponent implements OnInit {
 
   constructor(
     private formbuilder: FormBuilder,
-    private afs: AngularFirestore,
     private dialogref: MatDialogRef<AddOrderDialogComponent>,
     public angularFireAuth: AngularFireAuth,
     private api: firebaseService,
@@ -90,25 +86,14 @@ export class AddOrderDialogComponent implements OnInit {
       .get(control) as FormControl;
   }
 
-  FirebaseID() {
-    this.angularFireAuth.currentUser.then((data) => {
-      const UserID = data?.uid;
-      this.UID = UserID;
-    });
-  }
-
   ngOnInit(): void {
     this.OrderForm = this.createForm(null);
     this.getAllItem();
-    this.FirebaseID();
   }
 
   createForm(data: any): FormGroup {
-    let Uid = generate();
-    this.id = Uid;
     return this.formbuilder.group({
       userID: [data ? data.userID : this.UID],
-      id: [data ? data.id : this.id],
       operationType: [
         data ? data.operationType : this.Types[0],
         Validators.required,
@@ -241,12 +226,9 @@ export class AddOrderDialogComponent implements OnInit {
       quantityEnter.orderdetials = quantityEnter.orderdetials.filter(
         (item: any) => item.quantity
       );
-      const auth = firebase.auth().currentUser?.uid;
-      this.afs
-        .collection('Orders')
-        .doc(this.OrderForm.value.id)
-        .set(quantityEnter)
-        .then(() => {
+      this.api.AddOrders(this.OrderForm.value).subscribe({
+        next: (res) => {
+          location.reload();
           Swal.fire({
             position: 'top',
             icon: 'success',
@@ -254,8 +236,8 @@ export class AddOrderDialogComponent implements OnInit {
             showConfirmButton: false,
             timer: 1300,
           });
-        })
-        .catch((error) => {
+        },
+        error: (err) => {
           Swal.fire({
             position: 'top',
             icon: 'success',
@@ -263,7 +245,8 @@ export class AddOrderDialogComponent implements OnInit {
             showConfirmButton: false,
             timer: 1300,
           });
-        });
+        },
+      });
       this.OrderForm.reset();
       this.dialogref.close('Saved!');
     }

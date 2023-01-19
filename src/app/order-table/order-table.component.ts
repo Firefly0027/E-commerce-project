@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.component';
@@ -18,8 +18,8 @@ export interface OrderTable {
   custname: string;
   netTotal: number;
   grossTotal: number;
-  Totaltax: number;
-  totaldiscount: number;
+  taxTotal: number;
+  discountTotal: number;
   operationType: string;
   quantityTotal: number;
   orderdetials: Detials[] | MatTableDataSource<Detials>;
@@ -55,7 +55,6 @@ export class OrderTableComponent implements OnInit {
   dataSource: MatTableDataSource<any[]> = new MatTableDataSource<any[]>([
     OrderTable_DATA,
   ]);
-  id!: string;
   @ViewChild(MatSort) sort: MatSort = new MatSort();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   UserID = '';
@@ -68,22 +67,14 @@ export class OrderTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.UserID = localStorage.getItem('userId') || '';
-    this.GetOrder(this.UserID);
+    // this.UserID = localStorage.getItem('userId') || '';
+    this.GetOrder();
   }
 
   // Filtering
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  FirebaseID() {
-    this.angularFireAuth.currentUser.then((data) => {
-      if (data?.uid) {
-        this.UserID = data.uid;
-      }
-    });
   }
 
   // Dialog to Show Detials
@@ -104,11 +95,16 @@ export class OrderTableComponent implements OnInit {
     });
   }
 
-  GetOrder(userId: string) {
-    this.api.getOrders().subscribe((orders) => {
-      this.dataSource = new MatTableDataSource(orders);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+  GetOrder() {
+    this.api.getOrders().subscribe({
+      next: (orders) => {
+        this.dataSource = new MatTableDataSource(orders);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      },
+      error: (err) => {
+        alert(err?.error.message);
+      },
     });
   }
 
@@ -122,7 +118,18 @@ export class OrderTableComponent implements OnInit {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.afs.collection('Orders').doc(id).delete();
+        this.api.DeleteOrder(id).subscribe({
+          next: (res) => {
+            this.GetOrder();
+            Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Order successfully Deleted!',
+              showConfirmButton: false,
+              timer: 1300,
+            });
+          },
+        });
       } else result.isDismissed;
     });
   }
