@@ -6,10 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AddItemDialogComponent } from '../add-item-dialog/add-item-dialog.component';
 import { firebaseService } from '../firebase.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import Swal from 'sweetalert2';
-import { EditItemDialogComponent } from '../edit-item-dialog/edit-item-dialog.component';
-import { Router } from '@angular/router';
 
 export interface ItemTable {
   categories: string;
@@ -45,11 +42,7 @@ export class ItemTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private dialog: MatDialog,
-    private api: firebaseService,
-    private router: Router
-  ) {}
+  constructor(private dialog: MatDialog, private api: firebaseService) {}
 
   ngOnInit(): void {
     this.getAllItem();

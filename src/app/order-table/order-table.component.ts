@@ -98,7 +98,10 @@ export class OrderTableComponent implements OnInit {
   GetOrder() {
     this.api.getOrders().subscribe({
       next: (orders) => {
-        this.dataSource = new MatTableDataSource(orders);
+        const FilterOrders = orders.filter(
+          (order: any) => order.userID == localStorage.getItem('user')
+        );
+        this.dataSource = new MatTableDataSource(FilterOrders);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },

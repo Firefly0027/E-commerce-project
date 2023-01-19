@@ -217,10 +217,10 @@ export class AddOrderDialogComponent implements OnInit {
       });
     } else {
       this.OrderForm.value.userID = this.UID;
-      this.OrderForm.value.grosstotal = this.grossTotalDisplayValue;
-      this.OrderForm.value.totaldiscount = this.Totaldiscount;
-      this.OrderForm.value.totaltax = this.totaltax;
-      this.OrderForm.value.nettotal = this.total;
+      this.OrderForm.value.grosstotal = parseInt(this.grossTotalDisplayValue);
+      this.OrderForm.value.totaldiscount = parseInt(this.Totaldiscount);
+      this.OrderForm.value.totaltax = parseInt(this.totaltax);
+      this.OrderForm.value.nettotal = parseInt(this.total);
       this.OrderForm.value.quantityTotal = this.SumQuantity;
       const quantityEnter = { ...this.OrderForm.value };
       quantityEnter.orderdetials = quantityEnter.orderdetials.filter(
@@ -240,7 +240,7 @@ export class AddOrderDialogComponent implements OnInit {
         error: (err) => {
           Swal.fire({
             position: 'top',
-            icon: 'success',
+            icon: 'error',
             title: 'Error Adding Order!!',
             showConfirmButton: false,
             timer: 1300,
