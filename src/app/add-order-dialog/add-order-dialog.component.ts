@@ -230,7 +230,7 @@ export class AddOrderDialogComponent implements OnInit {
       console.log(this.OrderForm.value);
       this.api.AddOrders(order).subscribe({
         next: (res) => {
-          // location.reload();
+          location.reload();
           Swal.fire({
             position: 'top',
             icon: 'success',

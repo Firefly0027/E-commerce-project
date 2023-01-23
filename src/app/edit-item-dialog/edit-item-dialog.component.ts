@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { firebaseService } from '../firebase.service';
 
 @Component({
@@ -47,6 +48,13 @@ export class EditItemDialogComponent implements OnInit {
     this.api.UpDateItem(this.itemsDetials.itemID, this.itemsDetials).subscribe({
       next: (res) => {
         this.router.navigate(['/Item-Table']);
+        Swal.fire({
+          position: 'top',
+          icon: 'success',
+          title: 'Item UpDated successfully!',
+          showConfirmButton: false,
+          timer: 1300,
+        });
       },
     });
   }
