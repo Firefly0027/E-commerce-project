@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 import * as _ from 'lodash';
 
 export interface MATHTABLE {
-  itemId: number;
+  itemID: number;
   itemName: string;
   price: number;
   quantity: any;
@@ -79,7 +79,7 @@ export class AddOrderDialogComponent implements OnInit {
   }
   getOrderDetailsFormControl(orderItemId: string, control: string) {
     const controlIndex = this.OrderForm.value.orderdetials.findIndex(
-      (item: any) => item.idd === orderItemId
+      (item: any) => item.itemID === orderItemId
     );
     return (this.OrderForm.get('orderdetials') as FormArray)
       .at(controlIndex)
@@ -115,7 +115,7 @@ export class AddOrderDialogComponent implements OnInit {
       ? data.map((x) => {
           let group = this.formbuilder.group({
             company: [x.company],
-            idd: [x.id],
+            itemID: [x.itemID],
             price: [x.price],
             quantity: [x.quantity],
             grosstotal: [x.grosstotal],
@@ -128,7 +128,7 @@ export class AddOrderDialogComponent implements OnInit {
       : [
           this.formbuilder.group({
             company: ['', Validators.required],
-            idd: ['', Validators.required],
+            itemID: ['', Validators.required],
             price: ['', Validators.required],
             grosstotal: [''],
             quantity: ['', Validators.required],
@@ -216,17 +216,17 @@ export class AddOrderDialogComponent implements OnInit {
         timer: 1300,
       });
     } else {
-      this.OrderForm.value.userID = this.UID;
+      this.OrderForm.value.userID = parseInt(this.UID);
       this.OrderForm.value.grosstotal = parseInt(this.grossTotalDisplayValue);
-      this.OrderForm.value.totaldiscount = parseInt(this.Totaldiscount);
-      this.OrderForm.value.totaltax = parseInt(this.totaltax);
+      this.OrderForm.value.discountTotal = parseInt(this.Totaldiscount);
+      this.OrderForm.value.taxTotal = parseInt(this.totaltax);
       this.OrderForm.value.nettotal = parseInt(this.total);
       this.OrderForm.value.quantityTotal = this.SumQuantity;
-      const quantityEnter = { ...this.OrderForm.value };
-      quantityEnter.orderdetials = quantityEnter.orderdetials.filter(
-        (item: any) => item.quantity
-      );
-      this.api.AddOrders(this.OrderForm.value).subscribe({
+
+      var order = this.OrderForm.value;
+      order.orderdetials = order.orderdetials.filter((x: any) => x.quantity);
+
+      this.api.AddOrders(order).subscribe({
         next: (res) => {
           location.reload();
           Swal.fire({

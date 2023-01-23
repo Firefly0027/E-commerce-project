@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 export interface ItemTable {
   categories: string;
-  id: number;
+  ItemID: number;
   company: string;
   availability: string;
   price: number;

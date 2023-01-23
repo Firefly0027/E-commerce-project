@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import 'firebase/compat/database';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +10,10 @@ import { from, Observable } from 'rxjs';
 export class firebaseService {
   sort: any;
 
-  private BaseUrl: string = 'https://localhost:7071/api/Category';
-  private BaseUrlItems: string = 'https://localhost:7071/api/ItemTable';
-  private BaseUrlOrders: string = 'https://localhost:7071/api/OrderTable';
+  private BaseUrl: string = 'https://localhost:7060/api/Category';
+  private BaseUrlItems: string = 'https://localhost:7060/api/itemTable';
+  private BaseUrlOrders: string = 'https://localhost:7060/api/OrderTable';
+  private BaseUrlDetials: string = 'https://localhost:7060/api/OrderDetials';
 
   constructor(private afs: AngularFirestore, private http: HttpClient) {}
   //ORDER TABLE APIS
@@ -25,7 +26,7 @@ export class firebaseService {
   }
 
   DeleteOrder(id: string) {
-    return this.http.delete<any>('https://localhost:7071/api/OrderTable/' + id);
+    return this.http.delete<any>('https://localhost:7060/api/OrderTable/' + id);
   }
   //ITEM TABLE APIS
   GetItems(): Observable<any> {
@@ -37,18 +38,18 @@ export class firebaseService {
   }
 
   EditItem(id: string): Observable<any> {
-    return this.http.get<any>('https://localhost:7071/api/ItemTable/' + id);
+    return this.http.get<any>('https://localhost:7060/api/itemTable/' + id);
   }
 
   UpDateItem(id: string, UpdateItemRequest: any): Observable<any> {
     return this.http.put<any>(
-      'https://localhost:7071/api/ItemTable/' + id,
+      'https://localhost:7060/api/itemTable/' + id,
       UpdateItemRequest
     );
   }
 
   DeleteItem(id: string): Observable<any> {
-    return this.http.delete<any>('https://localhost:7071/api/ItemTable/' + id);
+    return this.http.delete<any>('https://localhost:7060/api/itemTable/' + id);
   }
   // CATEGORY APIS
   GetCategories(): Observable<any> {
@@ -57,5 +58,14 @@ export class firebaseService {
 
   AddCategories(CateogryObj: any): Observable<any> {
     return this.http.post<any>(`${this.BaseUrl}`, CateogryObj);
+  }
+
+  // OrderDetials API
+  GetDetials(): Observable<any> {
+    return this.http.get<any>(this.BaseUrlDetials);
+  }
+
+  FilterDetialsByID(id: string): Observable<any> {
+    return this.http.get<any>('https://localhost:7060/api/OrderDetials/' + id);
   }
 }

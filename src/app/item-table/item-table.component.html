@@ -70,7 +70,7 @@
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.itemID }}</td>
     </ng-container>
 
     <ng-container matColumnDef="company">
@@ -122,7 +122,7 @@
       <th mat-header-cell *matHeaderCellDef>Action</th>
       <td mat-cell *matCellDef="let element">
         <a
-          [routerLink]="['/Item-Table', 'edit', element.id]"
+          [routerLink]="['/Item-Table', 'edit', element.itemID]"
           mat-icon-button
           color="primary"
           matTooltip="Edit"
@@ -132,7 +132,7 @@
         <button
           mat-icon-button
           color="warn"
-          (click)="DeleteItem(element.id)"
+          (click)="DeleteItem(element.itemID)"
           matTooltip="Delete"
         >
           <mat-icon>delete</mat-icon>

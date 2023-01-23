@@ -9,7 +9,7 @@ import { firebaseService } from '../firebase.service';
 })
 export class EditItemDialogComponent implements OnInit {
   itemsDetials: any = {
-    id: '',
+    itemID: '',
     categoryID: '',
     company: '',
     availability: '',
@@ -44,7 +44,7 @@ export class EditItemDialogComponent implements OnInit {
   }
 
   upDateItem() {
-    this.api.UpDateItem(this.itemsDetials.id, this.itemsDetials).subscribe({
+    this.api.UpDateItem(this.itemsDetials.itemID, this.itemsDetials).subscribe({
       next: (res) => {
         this.router.navigate(['/Item-Table']);
       },

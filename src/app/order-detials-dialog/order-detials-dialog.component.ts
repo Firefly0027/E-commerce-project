@@ -1,6 +1,20 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { firebaseService } from '../firebase.service';
+
+export interface MATHTABLE {
+  orderID: number;
+  itemID: number;
+  itemName: string;
+  price: number;
+  quantity: any;
+  discount: number;
+  tax: number;
+  availability: string;
+  categories: string;
+}
+const MATHTABLE_DATA: MATHTABLE[] = [];
 
 @Component({
   selector: 'app-order-detials-dialog',
@@ -9,6 +23,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class OrderDetialsDialogComponent implements OnInit {
   constructor(
+    private api: firebaseService,
     public dialogRef: MatDialogRef<OrderDetialsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -22,43 +37,22 @@ export class OrderDetialsDialogComponent implements OnInit {
     'tax',
     'total',
   ];
-  dataSource = new MatTableDataSource(this.data.Details);
+  dataSource = new MatTableDataSource(MATHTABLE_DATA);
   tableFooterColumns: string[] = ['total'];
 
-  ngOnInit(): void {}
-
-  getTotalprice() {
-    return this.data.Details.map((t: { price: any }) =>
-      parseInt(t.price)
-    ).reduce((acc: any, value: any) => acc + value);
+  GetDeitals() {
+    this.api.GetDetials().subscribe({
+      next: (detials) => {
+        const FilterByOrder = detials;
+        const Filter = FilterByOrder.filter(
+          (order: any) => order.orderID == this.data.OrderID
+        );
+        this.dataSource = new MatTableDataSource(Filter);
+      },
+    });
   }
 
-  getTotalQuantity() {
-    return this.data.Details.map((t: { quantity: any }) =>
-      parseInt(t.quantity)
-    ).reduce((acc: any, value: any) => acc + value);
-  }
-
-  getTotalDiscount() {
-    return this.data.Details.map(
-      (t: { grosstotal: number; discount: number }) =>
-        (t.discount / 100) * t.grosstotal
-    ).reduce((acc: any, value: any) => acc + value);
-  }
-
-  getTotalTax() {
-    return this.data.Details.map(
-      (t: { grosstotal: number; tax: number }) => (t.tax / 100) * t.grosstotal
-    ).reduce((acc: any, value: any) => acc + value);
-  }
-  GetTotalProducts() {
-    return this.data.Details.map((t: { total: any }) =>
-      parseInt(t.total)
-    ).reduce((acc: any, value: any) => acc + value);
-  }
-  GetTotalGross() {
-    return this.data.Details.map((t: { grosstotal: any }) =>
-      parseInt(t.grosstotal)
-    ).reduce((acc: any, value: any) => acc + value);
+  ngOnInit(): void {
+    this.GetDeitals();
   }
 }

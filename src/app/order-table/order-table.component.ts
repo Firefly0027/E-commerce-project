@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.component';
 import { firebaseService } from '../firebase.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MatSort } from '@angular/material/sort';
 import { Timestamp } from 'firebase/firestore';
 import { MatPaginator } from '@angular/material/paginator';
@@ -60,14 +59,12 @@ export class OrderTableComponent implements OnInit {
   UserID = '';
 
   constructor(
-    private afs: AngularFirestore,
     private api: firebaseService,
     public angularFireAuth: AngularFireAuth,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    // this.UserID = localStorage.getItem('userId') || '';
     this.GetOrder();
   }
 
@@ -78,12 +75,12 @@ export class OrderTableComponent implements OnInit {
   }
 
   // Dialog to Show Detials
-  openOrderDetialsDialog(content: Detials[]) {
+  openOrderDetialsDialog(id: string) {
     this.dialog.open(OrderDetialsDialogComponent, {
       width: '100vw',
       maxWidth: '50vw',
       data: {
-        Details: content,
+        OrderID: id,
       },
     });
   }

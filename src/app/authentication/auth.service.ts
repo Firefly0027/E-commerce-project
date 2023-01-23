@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private BaseUrl: string = 'https://localhost:7071/api/Users/';
-  private BaseUSers: string = 'https://localhost:7071/api/Users';
+  private BaseUrl: string = 'https://localhost:7060/api/UsersControllers/';
 
   constructor(private http: HttpClient) {}
 
