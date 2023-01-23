@@ -142,7 +142,7 @@ export class AddOrderDialogComponent implements OnInit {
   FilterCateg($event: any) {
     let FilteredData = _.filter(this.apiResponse, (item) => {
       return (
-        item.categories.categoryName == $event.value &&
+        item.category.categoryName == $event.value &&
         item.availability == 'In stock'
       );
     });

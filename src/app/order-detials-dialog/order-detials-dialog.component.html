@@ -7,15 +7,13 @@
     <ng-container matColumnDef="itemName">
       <mat-header-cell *matHeaderCellDef> Item-Name </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        {{ element.itemTables.company | uppercase }}
+        {{ element.items.company | uppercase }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="price">
       <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
-      <mat-cell *matCellDef="let element"
-        >{{ element.itemTables.price }}
-      </mat-cell>
+      <mat-cell *matCellDef="let element">{{ element.items.price }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="quantity">

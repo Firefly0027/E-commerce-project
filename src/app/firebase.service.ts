@@ -10,62 +10,56 @@ import { Observable } from 'rxjs';
 export class firebaseService {
   sort: any;
 
-  private BaseUrl: string = 'https://localhost:7060/api/Category';
-  private BaseUrlItems: string = 'https://localhost:7060/api/itemTable';
-  private BaseUrlOrders: string = 'https://localhost:7060/api/OrderTable';
-  private BaseUrlDetials: string = 'https://localhost:7060/api/OrderDetials';
+  private BaseUrl: string = 'https://localhost:7060/api/';
 
   constructor(private afs: AngularFirestore, private http: HttpClient) {}
   //ORDER TABLE APIS
   getOrders(): Observable<any> {
-    return this.http.get<any>(this.BaseUrlOrders);
+    return this.http.get<any>(`${this.BaseUrl}OrderT`);
   }
 
   AddOrders(OrderObj: any): Observable<any> {
-    return this.http.post<any>(`${this.BaseUrlOrders}`, OrderObj);
+    return this.http.post<any>(`${this.BaseUrl}OrderT`, OrderObj);
   }
 
   DeleteOrder(id: string) {
-    return this.http.delete<any>('https://localhost:7060/api/OrderTable/' + id);
+    return this.http.delete<any>(`${this.BaseUrl}OrderT/` + id);
   }
   //ITEM TABLE APIS
   GetItems(): Observable<any> {
-    return this.http.get<any>(this.BaseUrlItems);
+    return this.http.get<any>(`${this.BaseUrl}ItemT`);
   }
 
   AddItems(ItemsObj: any): Observable<any> {
-    return this.http.post<any>(`${this.BaseUrlItems}`, ItemsObj);
+    return this.http.post<any>(`${this.BaseUrl}ItemT`, ItemsObj);
   }
 
   EditItem(id: string): Observable<any> {
-    return this.http.get<any>('https://localhost:7060/api/itemTable/' + id);
+    return this.http.get<any>(`${this.BaseUrl}ItemT/` + id);
   }
 
   UpDateItem(id: string, UpdateItemRequest: any): Observable<any> {
-    return this.http.put<any>(
-      'https://localhost:7060/api/itemTable/' + id,
-      UpdateItemRequest
-    );
+    return this.http.put<any>(`${this.BaseUrl}ItemT/` + id, UpdateItemRequest);
   }
 
   DeleteItem(id: string): Observable<any> {
-    return this.http.delete<any>('https://localhost:7060/api/itemTable/' + id);
+    return this.http.delete<any>(`${this.BaseUrl}ItemT/` + id);
   }
   // CATEGORY APIS
   GetCategories(): Observable<any> {
-    return this.http.get<any>(this.BaseUrl);
+    return this.http.get<any>(`${this.BaseUrl}Category`);
   }
 
   AddCategories(CateogryObj: any): Observable<any> {
-    return this.http.post<any>(`${this.BaseUrl}`, CateogryObj);
+    return this.http.post<any>(`${this.BaseUrl}Category`, CateogryObj);
   }
 
   // OrderDetials API
   GetDetials(): Observable<any> {
-    return this.http.get<any>(this.BaseUrlDetials);
+    return this.http.get<any>(`${this.BaseUrl}OrderDetials`);
   }
 
   FilterDetialsByID(id: string): Observable<any> {
-    return this.http.get<any>('https://localhost:7060/api/OrderDetials/' + id);
+    return this.http.get<any>(`${this.BaseUrl}OrderDetials/` + id);
   }
 }

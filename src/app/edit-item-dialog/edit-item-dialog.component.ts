@@ -56,6 +56,9 @@ export class EditItemDialogComponent implements OnInit {
           timer: 1300,
         });
       },
+      error: (err) => {
+        alert('not working?');
+      },
     });
   }
 

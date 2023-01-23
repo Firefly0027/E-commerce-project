@@ -44,18 +44,29 @@
       />
     </mat-form-field>
 
-    <mat-form-field fxLayoutAlign="center center" (click)="GetCategories()">
-      <mat-label> Filter by Categories</mat-label>
-      <mat-select (selectionChange)="FilterCateg($event)">
-        <mat-option
-          *ngFor="let Categ of categories"
-          [value]="Categ.categoryName"
-          class="DropDown-color"
-        >
-          {{ Categ.categoryName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="Delete-filtering">
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Example icon button with a menu icon"
+        (click)="getAllItem()"
+      >
+        <mat-icon>cancel</mat-icon>
+      </button>
+
+      <mat-form-field fxLayoutAlign="center center" (click)="GetCategories()">
+        <mat-label> Filter by Categories</mat-label>
+        <mat-select (selectionChange)="FilterCateg($event)">
+          <mat-option
+            *ngFor="let Categ of categories"
+            [value]="Categ.categoryName"
+            class="dropdown"
+          >
+            {{ Categ.categoryName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <br />
     <!-- INPUTS TO ORDER TABLE ENDS -->

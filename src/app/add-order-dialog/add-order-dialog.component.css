@@ -39,3 +39,9 @@ mat-form-field {
   padding: 0 66px;
   background: rgb(6, 6, 54);
 }
+.Delete-filtering {
+  align-items: center;
+  display: flex;
+  width: 40rem;
+  padding-left: 25rem;
+}
