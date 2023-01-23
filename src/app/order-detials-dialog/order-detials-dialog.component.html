@@ -31,14 +31,14 @@
     <ng-container matColumnDef="discount">
       <mat-header-cell *matHeaderCellDef> Discount </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        {{ element.discount / 100 | percent }}
+        {{ element.discount | currency }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="tax">
       <mat-header-cell *matHeaderCellDef> Tax </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        {{ element.tax / 100 | percent }}
+        {{ element.tax | currency }}
       </mat-cell>
     </ng-container>
 

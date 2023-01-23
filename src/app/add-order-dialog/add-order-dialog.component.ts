@@ -178,6 +178,8 @@ export class AddOrderDialogComponent implements OnInit {
         this.total += this.grosstotal - this.discount + this.tax;
         this.TotalEachItem = this.grosstotal - this.discount + this.tax;
         this.SumQuantity = this.SumQuantity + parseInt(element.quantity);
+        this.OrderForm.value.orderdetials[index].discount = this.discount;
+        this.OrderForm.value.orderdetials[index].tax = this.tax;
         this.OrderForm.value.orderdetials[index].grosstotal =
           this.OrderForm.value.orderdetials[index].price *
           this.OrderForm.value.orderdetials[index].quantity;
@@ -225,10 +227,10 @@ export class AddOrderDialogComponent implements OnInit {
 
       var order = this.OrderForm.value;
       order.orderdetials = order.orderdetials.filter((x: any) => x.quantity);
-
+      console.log(this.OrderForm.value);
       this.api.AddOrders(order).subscribe({
         next: (res) => {
-          location.reload();
+          // location.reload();
           Swal.fire({
             position: 'top',
             icon: 'success',
